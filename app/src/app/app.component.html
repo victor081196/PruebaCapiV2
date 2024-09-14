@@ -1,0 +1,268 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">PRUEBA</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+      </ul>
+      <div class="d-flex">
+        <input class="form-control me-2" type="text" placeholder="Buscar"
+          aria-label="Search" (input)="buscarContactos($event)">
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Lista de contactos</h4>
+          <div class="row g-3">
+            <div class="col-12">
+              <button
+                type="button"
+                class="btn btn-primary float-end" (click)="agregarContacto()">
+                <i class="fa fa-plus"></i> Agregar
+              </button>
+            </div>
+            <div class="col-12">
+              <div
+                class="table-responsive-sm">
+                <table
+                  class="table">
+                  <thead class="table-dark">
+                    <tr>
+                      <th scope="col">NOMBRE</th>
+                      <th scope="col">EMPRESA</th>
+                      <th scope="col">PAGINA WEB</th>
+                      <th scope="col">ACCIONES</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let contacto of contactos">
+                      <td scope="row">{{contacto.cts_nombre}}</td>
+                      <td scope="row">{{contacto.cts_empresa}}</td>
+                      <td scope="row">{{contacto.cts_pagina_web}}</td>
+                      <td scope="row">
+                        <div class="btn-group" role="group"
+                          aria-label="Button">
+                          <button
+                            type="button"
+                            class="btn btn-light"
+                            (click)="verContacto(contacto.cts_id)">
+                            <i class="fa fa-eye"></i>
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-warning"
+                            (click)="editarcontacto(contacto.cts_id)">
+                            <i class="fa fa-edit"></i>
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-danger"
+                            (click)="eliminarContacto(contacto.cts_id)">
+                            <i class="fa fa-trash"></i>
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-dark"
+                            (click)="agregarDatos(contacto.cts_id)">
+                            <i class="fa fa-plus"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Body -->
+<div
+  class="modal fade"
+  id="agregarContacto"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalTitleId"
+  aria-hidden="true">
+  <div
+    class="modal-dialog modal-dialog-scrollable"
+    role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitleId">
+          Agregar contacto
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <form (ngSubmit)="guardarContacto()" #contactForm="ngForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="cts_nombre" class="form-label"><span class="text-danger">*</span> Nombre</label>
+            <input type="hidden" [(ngModel)]="contact.cts_id" name="cts_id">
+            <input type="text" id="cts_nombre" class="form-control"
+              [(ngModel)]="contact.cts_nombre" name="cts_nombre" autofocus>
+            <div *ngIf="formErrors['cts_nombre']" class="text-danger">{{
+              formErrors['cts_nombre'] }}</div>
+          </div>
+          <div class="mb-3">
+            <label for="cts_empresa" class="form-label"><span class="text-danger">*</span> Empresa</label>
+            <input type="text" id="cts_empresa" class="form-control"
+              [(ngModel)]="contact.cts_empresa" name="cts_empresa">
+            <div *ngIf="formErrors['cts_empresa']" class="text-danger">{{
+              formErrors['cts_empresa'] }}</div>
+          </div>
+          <div class="mb-3">
+            <label for="cts_pagina_web" class="form-label"><span class="text-danger">*</span> Pagina web</label>
+            <input type="text" id="cts_pagina_web" class="form-control"
+              [(ngModel)]="contact.cts_pagina_web" name="cts_pagina_web">
+            <div *ngIf="formErrors['cts_pagina_web']" class="text-danger">{{
+              formErrors['cts_pagina_web'] }}</div>
+          </div>
+          <div class="mb-3">
+            <label for="cts_notas" class="form-label">Notas</label>
+            <textarea id="cts_notas" class="form-control"
+              [(ngModel)]="contact.cts_notas" name="cts_notas"
+              rows="3"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Cerrar
+          </button>
+          <button type="submit" class="btn btn-primary">Agregar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Body -->
+<div
+  class="modal fade"
+  id="verContacto"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalTitleId"
+  aria-hidden="true">
+  <div
+    class="modal-dialog modal-dialog-scrollable"
+    role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitleId">
+          Ver contacto
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h6>Nombre: <span>{{nombre}}</span> </h6>
+        <h6>Empresa: <span>{{empresa}}</span> </h6>
+        <h6>Pagina: <span>{{pagina}}</span> </h6>
+        <h6>Notas: <span>{{notas}}</span> </h6>
+        <hr>
+        <h6>Telefonos: {{telefonos}}</h6>
+        <h6>Emails: {{emails}}</h6>
+        <h6>Direcciones: {{direcciones}}</h6>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="agregarDatos"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalTitleId"
+  aria-hidden="true">
+  <div
+    class="modal-dialog modal-dialog-scrollable"
+    role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitleId">
+          Agregar Datos
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <form (ngSubmit)="guardarDatos()" #datosForm="ngForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="tls_telefono" class="form-label">Telefono</label>
+            <input type="hidden" [(ngModel)]="datos.id_contacto"
+              name="id_contacto">
+            <input type="text" id="tls_telefono" class="form-control"
+              [(ngModel)]="datos.tls_telefono" name="tls_telefono"
+              autofocus maxlength="10">
+            <div *ngIf="formErrors['tls_telefono']" class="text-danger">{{
+              formErrors['tls_telefono'] }}</div>
+          </div>
+          <div class="mb-3">
+            <label for="eml_email" class="form-label">Email</label>
+            <input type="text" id="eml_email" class="form-control"
+              [(ngModel)]="datos.eml_email" name="eml_email"
+              autofocus>
+            <div *ngIf="formErrors['eml_email']" class="text-danger">{{
+              formErrors['eml_email'] }}</div>
+          </div>
+          <div class="mb-3">
+            <label for="dir_direccion" class="form-label">Direccion</label>
+            <input type="text" id="dir_direccion" class="form-control"
+              [(ngModel)]="datos.dir_direccion" name="dir_direccion"
+              autofocus>
+            <div *ngIf="formErrors['dir_direccion']" class="text-danger">{{
+              formErrors['dir_direccion'] }}</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Cerrar
+          </button>
+          <button type="submit" class="btn btn-primary">Agregar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
