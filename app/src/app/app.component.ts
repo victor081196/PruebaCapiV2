@@ -177,6 +177,8 @@ export class AppComponent {
   }
 
   editarcontacto(cts_id: number): void {
+    this.formErrors = {};
+    this.errorMessage = '';
     this.apiService.getContactById(cts_id).subscribe({
       next: (data) => {
         // Asigna los datos del contacto al formulario

@@ -15,7 +15,7 @@ class ContactosSeeder extends Seeder
     {
 
         $users = [];
-        for ($i = 0; $i <= 100; $i++) {
+        for ($i = 1; $i <= 5000; $i++) {
             $users[] = [
                 'cts_nombre' => 'Prueba ' . $i,
                 'cts_pagina_web' => 'www.prueba'.$i.'.com',
